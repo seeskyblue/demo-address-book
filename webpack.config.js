@@ -69,7 +69,7 @@ module.exports = function webpackConfig(env = {}) {
     ),
 
     entry: {
-      seedlink: ['whatwg-fetch', 'normalize.css', './src/index.js'],
+      seedlink: ['normalize.css', './src/index.js'],
     },
 
     output: {
@@ -107,7 +107,8 @@ module.exports = function webpackConfig(env = {}) {
           secure: false,
         },
         {
-          context: req => [/(\/*)?\/sso/, /raphael/].some(reg => reg.test(req)),
+          context: (req) =>
+            [/(\/*)?\/sso/, /raphael/].some((reg) => reg.test(req)),
           target: config.ssoProxy,
           secure: false,
         },
@@ -146,24 +147,22 @@ module.exports = function webpackConfig(env = {}) {
             nodePath.join(__dirname, 'node_modules/intl-messageformat-parser'),
           ],
           loader: 'babel-loader',
-          options: {
-            rootMode: 'upward',
-          },
+          // options: {
+          //   rootMode: 'upward',
+          // },
         },
         {
           test: type.source,
           exclude: [/node_modules/],
           loader: 'babel-loader',
-          options: {
-            rootMode: 'upward',
-          },
+          // options: {
+          //   rootMode: 'upward',
+          // },
         },
         {
           test: type.style,
           use: [
-            devprod('style-loader', {
-              loader: MiniCssExtractPlugin.loader,
-            }),
+            devprod('style-loader', { loader: MiniCssExtractPlugin.loader }),
             'css-loader',
           ],
         },
@@ -178,7 +177,6 @@ module.exports = function webpackConfig(env = {}) {
         __GIT_BRANCH__: JSON.stringify(git.branch),
         __GIT_REVISION__: JSON.stringify(git.sha),
       }),
-      new webpack.ProgressPlugin(),
       new webpack.HashedModuleIdsPlugin(),
       new MiniCssExtractPlugin({
         filename: `seedlink.asil.[contenthash].css`,

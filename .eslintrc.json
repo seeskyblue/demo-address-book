@@ -10,7 +10,6 @@
     "plugin:compat/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:sonarjs/recommended",
     "plugin:prettier/recommended"
   ],
   "globals": {
@@ -37,8 +36,7 @@
     "compat",
     "react",
     "react-hooks",
-    "jsx-a11y",
-    "sonarjs"
+    "jsx-a11y"
   ],
   "rules": {
     "no-await-in-loop": "error",
@@ -139,9 +137,7 @@
     "jsx-a11y/label-has-for": "warn",
     "jsx-a11y/anchor-is-valid": "warn",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "sonarjs/no-duplicate-string": "warn",
-    "sonarjs/cognitive-complexity": "warn"
+    "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
     "polyfills": [
