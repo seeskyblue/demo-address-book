@@ -22,7 +22,7 @@ npm start
   <caption>Address Book</caption>
   <thead>
     <tr>
-      <th scope="col" rowspan="2"><input type="checkbox" /></th>
+      <th scope="col" rowspan="2">[]</th>
       <th scope="col" rowspan="2">ID</th>
       <th scope="col" rowspan="2">Name</th>
       <th scope="col" rowspan="2">Location</th>
@@ -36,7 +36,7 @@ npm start
   </thead>
   <tbody>
     <tr>
-      <th scope="row"><input type="checkbox" /></th>
+      <th scope="row">[]</th>
       <td>501</td>
       <td>Khali Zhang</td>
       <td>Shanghai</td>
@@ -45,7 +45,7 @@ npm start
       <td>650-353-1239</td>
     </tr>
     <tr>
-      <th scope="row"><input type="checkbox" /></th>
+      <th scope="row">[]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -54,7 +54,7 @@ npm start
       <td></td>
     </tr>
     <tr>
-      <th scope="row"><input type="checkbox" /></th>
+      <th scope="row">[]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -63,7 +63,7 @@ npm start
       <td></td>
     </tr>
     <tr>
-      <th scope="row"><input type="checkbox" /></th>
+      <th scope="row">[]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -75,12 +75,12 @@ npm start
   <tfoot>
     <tr>
       <td></td>
-      <td><button>Delete</button></td>
+      <td>[Delete]</td>
       <td></td>
       <td></td>
       <td></td>
-      <td><button>Update</button></td>
-      <td><button>Add</button></td>
+      <td>[Update]</td>
+      <td>[Add]</td>
     </tr>
   </tfoot>
 </table>
