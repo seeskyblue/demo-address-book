@@ -19,8 +19,6 @@ export default function IntlProvider(props) {
     []
   );
 
-  console.debug(contextValue);
-
   return (
     <IntlContext.Provider value={contextValue}>
       <Provider locale={locale} messages={messages}>
@@ -36,17 +34,13 @@ IntlProvider.propTypes = {
 
 function useLocaleMessages(locale) {
   const [messages, setMessages] = React.useState();
-  console.debug(locale);
 
   React.useEffect(() => {
     let cancel = false;
-    console.debug(locale);
     if (locale == null) return;
 
     import(`./messages/${locale}.js`)
       .then(({ default: message }) => {
-        // TODO flatten messages
-        console.debug('here', message);
         if (!cancel) setMessages(flattenMessage(message));
       })
       .catch(console.error);
