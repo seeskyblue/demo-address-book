@@ -53,7 +53,10 @@
         ]
       }
     ],
-    "no-use-before-define": ["error", "nofunc"],
+    "no-use-before-define": [
+      "error",
+      "nofunc"
+    ],
     "no-shadow": "error",
     "class-methods-use-this": "error",
     "default-case": "error",
@@ -61,11 +64,20 @@
     "no-magic-numbers": [
       "warn",
       {
-        "ignore": [-1, 0, 1, 2, 100],
+        "ignore": [
+          -1,
+          0,
+          1,
+          2,
+          100
+        ],
         "ignoreArrayIndexes": true
       }
     ],
-    "arrow-body-style": ["error", "as-needed"],
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
     "no-duplicate-imports": "error",
     "sort-imports": [
       "error",
@@ -84,7 +96,13 @@
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index"
+        ],
         "newlines-between": "always"
       }
     ],
@@ -99,7 +117,10 @@
     "react/forbid-prop-types": [
       "error",
       {
-        "forbid": ["any", "array"]
+        "forbid": [
+          "any",
+          "array"
+        ]
       }
     ],
     "react/no-unused-prop-types": "error",
@@ -116,7 +137,10 @@
           "rendering"
         ],
         "groups": {
-          "rendering": ["/^render.+$/", "render"]
+          "rendering": [
+            "/^render.+$/",
+            "render"
+          ]
         }
       }
     ],
@@ -131,7 +155,10 @@
     "react/jsx-filename-extension": [
       "warn",
       {
-        "extensions": [".js", ".jsx"]
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
       }
     ],
     "jsx-a11y/label-has-for": "warn",
@@ -140,6 +167,12 @@
     "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
+    "import/resolver": {
+      "node": {},
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    },
     "polyfills": [
       "fetch",
       "window.cancelAnimationFrame",

@@ -30,22 +30,11 @@ const type = { image, font, html, json, source, style };
 
 const protocol = 'http:';
 const host = '0.0.0.0';
-const port = 9000;
-const apiPort = 8000;
-const ssoPort = 5000;
-const apiProxy = `${protocol}//${host}:${apiPort}`;
-const ssoProxy = `${protocol}//${host}:${ssoPort}`;
+const port = 3000;
 const config = {
   protocol,
   host,
   port,
-  apiProxy,
-  ssoProxy,
-};
-
-const baseURL = {
-  REST: '/api/v3/sluser',
-  GQL: '/gql',
 };
 
 function createDevprod(env = 'production') {
@@ -69,13 +58,13 @@ module.exports = function webpackConfig(env = {}) {
     ),
 
     entry: {
-      seedlink: ['normalize.css', './src/index.js'],
+      [pkg.name]: ['normalize.css', './src/index.js'],
     },
 
     output: {
       path: devprod(path.dist, path.build),
-      filename: `[name].asil.${git.sha}.js`,
-      chunkFilename: `[name].asil.[contenthash].js`,
+      filename: `[name].${git.sha}.js`,
+      chunkFilename: `[name].[contenthash].js`,
       publicPath: devprod('/', '/static/survey/'),
     },
 
@@ -100,19 +89,6 @@ module.exports = function webpackConfig(env = {}) {
       hot: true,
       overlay: true,
       port: config.port,
-      proxy: [
-        {
-          context: Object.values(baseURL),
-          target: config.apiProxy,
-          secure: false,
-        },
-        {
-          context: (req) =>
-            [/(\/*)?\/sso/, /raphael/].some((reg) => reg.test(req)),
-          target: config.ssoProxy,
-          secure: false,
-        },
-      ],
       useLocalIp: true,
     }),
 
@@ -142,9 +118,9 @@ module.exports = function webpackConfig(env = {}) {
         {
           test: type.source,
           include: [
-            nodePath.join(__dirname, 'node_modules/react-intl'),
-            nodePath.join(__dirname, 'node_modules/intl-messageformat'),
-            nodePath.join(__dirname, 'node_modules/intl-messageformat-parser'),
+            nodePath.join(base, 'node_modules/react-intl'),
+            nodePath.join(base, 'node_modules/intl-messageformat'),
+            nodePath.join(base, 'node_modules/intl-messageformat-parser'),
           ],
           loader: 'babel-loader',
           // options: {
@@ -179,8 +155,8 @@ module.exports = function webpackConfig(env = {}) {
       }),
       new webpack.HashedModuleIdsPlugin(),
       new MiniCssExtractPlugin({
-        filename: `seedlink.asil.[contenthash].css`,
-        chunkFilename: `[name].asil.[contenthash].css`,
+        filename: `[name].[contenthash].css`,
+        chunkFilename: `[name].[contenthash].css`,
       }),
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({

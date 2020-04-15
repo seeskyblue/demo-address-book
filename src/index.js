@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import AddressBook from './AddressBook';
+import App from './app';
 
-ReactDom.render(<AddressBook />, document.getElementById('root'));
+ReactDom.render(<App />, document.getElementById('root'));
