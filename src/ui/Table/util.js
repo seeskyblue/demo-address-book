@@ -69,3 +69,8 @@ export function getFlattenColumns(columns) {
     return list;
   }, []);
 }
+
+const DEFAULT_SPAN = 1;
+export function omitDefaultSpan(span) {
+  return span !== DEFAULT_SPAN ? span : undefined;
+}

@@ -47,21 +47,6 @@ export default function AddressBookTable(props) {
           title={formatMessage({ id: MESSAGE_TITLE_CELL })}
           dataIndex={['phone', 'cell']}
         />
-        <Table.ColumnGroup
-          key="phone"
-          title={formatMessage({ id: MESSAGE_TITLE_PHONE })}
-        >
-          <Table.Column
-            key="1"
-            title={formatMessage({ id: MESSAGE_TITLE_OFFICE })}
-            dataIndex={['phone', 'office']}
-          />
-          <Table.Column
-            key="2"
-            title={formatMessage({ id: MESSAGE_TITLE_CELL })}
-            dataIndex={['phone', 'cell']}
-          />
-        </Table.ColumnGroup>
       </Table.ColumnGroup>
     </Table>
   );

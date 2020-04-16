@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getColumnKey, getColumnsHeads } from './util';
-
-const DEFAULT_SPAN = 1;
+import { getColumnKey, getColumnsHeads, omitDefaultSpan } from './util';
 
 export default function TableHead(props) {
   const { columns } = props;
@@ -17,12 +15,12 @@ export default function TableHead(props) {
           {headColumns?.map((column) => {
             const { children, title, colSpan } = column;
             const hasChildren = children != null;
-            const rowSpan = hasChildren ? DEFAULT_SPAN : headRows - rowIndex;
+            const rowSpan = hasChildren ? 1 : headRows - rowIndex;
             return (
               <th
                 key={getColumnKey(column)}
-                rowSpan={rowSpan !== DEFAULT_SPAN ? rowSpan : undefined}
-                colSpan={colSpan !== DEFAULT_SPAN ? colSpan : undefined}
+                rowSpan={omitDefaultSpan(rowSpan)}
+                colSpan={omitDefaultSpan(colSpan)}
                 scope={hasChildren ? 'colgroup' : 'col'}
               >
                 {title}
