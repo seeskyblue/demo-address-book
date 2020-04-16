@@ -1,13 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-const Table = styled.table``;
+import Column from './Column';
+import ColumnGroup from './ColumnGroup';
+import TableHead from './TableHead';
+import TableBody from './TableBody';
+import { getColumnProps } from './util';
 
-export default Table;
+export default function Table(props) {
+  const { data, children } = props;
 
-Table.Row = styled.tr``;
+  const columns = useColumns(children);
 
-Table.Cell = styled.td.attrs((props) => ({
-  as: props.head ? 'th' : 'td',
-}))``;
+  return (
+    <table>
+      <colgroup>{children}</colgroup>
+      <TableHead columns={columns} />
+      <TableBody columns={columns} data={data} />
+    </table>
+  );
+}
+
+Table.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element),
+  data: PropTypes.arrayOf(PropTypes.object),
+};
+
+Table.Column = Column;
+Table.ColumnGroup = ColumnGroup;
+Table.Head = TableHead;
+Table.Body = TableBody;
+
+function useColumns(children) {
+  const [columns, setColumns] = React.useState();
+
+  React.useEffect(() => {
+    setColumns(getColumnProps(children));
+  }, [children]);
+
+  return columns;
+}

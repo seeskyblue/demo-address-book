@@ -21,9 +21,11 @@ export default function IntlProvider(props) {
 
   return (
     <IntlContext.Provider value={contextValue}>
-      <Provider locale={locale} messages={messages}>
-        {children}
-      </Provider>
+      {messages && (
+        <Provider locale={locale} messages={messages}>
+          {children}
+        </Provider>
+      )}
     </IntlContext.Provider>
   );
 }

@@ -1,11 +1,13 @@
 import React from 'react';
 
+import AddressBook from './AddressBook';
+
 import { IntlProvider } from 'context/i18n';
 
 export default function App() {
   return (
     <IntlProvider>
-      <div>123</div>
+      <AddressBook />
     </IntlProvider>
   );
 }

@@ -1,6 +1,6 @@
 export default {
   address_book: {
-    tabel: {
+    table: {
       caption: 'Address Book',
       header: {
         id: 'ID',
