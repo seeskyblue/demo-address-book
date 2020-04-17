@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 import { getColumnData, getColumnKey, getFlattenColumns } from './util';
 
 export default function TableBody(props) {
-  const { columns, data } = props;
+  const { columns, dataSource, selectable } = props;
   const flattenColumns = useFlattenColumns(columns);
 
   return (
     <tbody>
-      {data?.map(({ key: dataKey, ...dataProps }) => (
+      {dataSource?.map(({ key: dataKey, ...dataProps }) => (
         <tr key={dataKey}>
+          {selectable && (
+            <th>
+              <input type="checkbox" />
+            </th>
+          )}
           {flattenColumns?.map((column) => (
             <td key={getColumnKey(column)}>
               {getColumnData(dataProps, column)}
@@ -33,7 +38,8 @@ TableBody.propTypes = {
       key: PropTypes.string,
     })
   ),
-  data: PropTypes.arrayOf(PropTypes.object),
+  dataSource: PropTypes.arrayOf(PropTypes.object),
+  selectable: PropTypes.bool,
 };
 
 function useFlattenColumns(columns) {

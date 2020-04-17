@@ -2,7 +2,7 @@ export default {
   address_book: {
     tabel: {
       caption: '通讯簿',
-      header: {
+      column: {
         id: '编号',
         name: '姓名',
         location: '地区',

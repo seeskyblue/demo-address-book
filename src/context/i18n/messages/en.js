@@ -2,7 +2,7 @@ export default {
   address_book: {
     table: {
       caption: 'Address Book',
-      header: {
+      column: {
         id: 'ID',
         name: 'Name',
         location: 'Location',

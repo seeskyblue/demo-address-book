@@ -10,6 +10,7 @@
     "start": "webpack-dev-server --config ./webpack.config.js --env.NODE_ENV development"
   },
   "dependencies": {
+    "@styled-icons/material": "^10.0.0",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

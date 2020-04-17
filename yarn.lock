@@ -859,7 +859,7 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@emotion/is-prop-valid@^0.8.8":
+"@emotion/is-prop-valid@^0.8.7", "@emotion/is-prop-valid@^0.8.8":
   version "0.8.8"
   resolved "https://npm.seedlinktech.com/@emotion%2fis-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
   integrity sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==
@@ -913,6 +913,22 @@
   version "2.2.2"
   resolved "https://npm.seedlinktech.com/@formatjs%2fintl-utils/-/intl-utils-2.2.2.tgz#adc448035c2e3f60c550bd27c97eca336e641f5a"
   integrity sha512-rKINaMRYH3FeNwYjEQwPtsA0kP2/hLLMB9mLi/QYfszz/huTqkInFmYilFRCX4oLlhFXDK5UQQMGNfEavN02Sg==
+
+"@styled-icons/material@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@styled-icons/material/-/material-10.0.0.tgz#79b2e6f9c9ab820edf2b60fec452d6444d508dcc"
+  integrity sha512-RNPlB7AUhPWQYLEH1/zNSu8fv7Hpdp7ylFMtMjgEyZNf25jW1NLwBBoGEZmUixc5uyIRmNk7JC/Jj2SoymAtJA==
+  dependencies:
+    "@styled-icons/styled-icon" "^10.0.0"
+    tslib "^1.11.1"
+
+"@styled-icons/styled-icon@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@styled-icons/styled-icon/-/styled-icon-10.0.0.tgz#9fe6511cd4aac1c0d57dbe5c773a6aaac23666e4"
+  integrity sha512-owIKYlIOv+daYscp6vnymOXiOAR6lsDoB2HYI10KrreovX0Ny48qbyqKjirvtxLFyEiHoz8QXSNO6QbanINv9Q==
+  dependencies:
+    "@emotion/is-prop-valid" "^0.8.7"
+    tslib "^1.11.1"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -7066,7 +7082,7 @@ toidentifier@1.0.0:
   resolved "https://npm.seedlinktech.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha1-fhvjRw8ed5SLxD2Uo8j013UrpVM=
 
-tslib@^1.10.0, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.11.1, tslib@^1.9.0:
   version "1.11.1"
   resolved "https://npm.seedlinktech.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
