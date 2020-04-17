@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getColumnData, getColumnKey, getFlattenColumns } from './util';
+import { getColumnData, getFlattenColumns } from './util';
 
 export default function TableBody(props) {
   const { columns, dataSource, selectable } = props;
@@ -17,9 +17,7 @@ export default function TableBody(props) {
             </th>
           )}
           {flattenColumns?.map((column) => (
-            <td key={getColumnKey(column)}>
-              {getColumnData(dataProps, column)}
-            </td>
+            <td key={column.key}>{getColumnData(dataProps, column)}</td>
           ))}
         </tr>
       ))}
@@ -35,7 +33,7 @@ TableBody.propTypes = {
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
       ]),
-      key: PropTypes.string,
+      key: PropTypes.string.isRequired,
     })
   ),
   dataSource: PropTypes.arrayOf(PropTypes.object),

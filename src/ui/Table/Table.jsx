@@ -6,7 +6,7 @@ import Column from './Column';
 import ColumnGroup from './ColumnGroup';
 import TableHead from './TableHead';
 import TableBody from './TableBody';
-import { getColumnProps } from './util';
+import { getColumnsFromChildren } from './util';
 
 const tableCSS = css`
   border-collapse: collapse;
@@ -71,7 +71,7 @@ function useColumns(children) {
   const [columns, setColumns] = React.useState();
 
   React.useEffect(() => {
-    setColumns(getColumnProps(children));
+    setColumns(getColumnsFromChildren(children));
   }, [children]);
 
   return columns;

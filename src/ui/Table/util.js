@@ -6,22 +6,25 @@ function isColumnGroupType(element) {
   return element.type === ColumnGroup;
 }
 
-export function getColumnProps(children) {
+export function getColumnsFromChildren(children) {
   return children != null
     ? React.Children.map(children, (child) => {
-        const { props, key } = child;
-        return {
-          key,
-          ...props,
+        const column = {
+          key: child.key,
+          ...child.props,
           children: isColumnGroupType(child)
-            ? getColumnProps(props.children)
+            ? getColumnsFromChildren(child.props.children)
             : undefined,
         };
+
+        column.key = getColumnKey(column);
+
+        return column;
       })
     : children;
 }
 
-export function getColumnKey(column) {
+function getColumnKey(column) {
   const { key, dataIndex } = column;
   return key != null
     ? key
@@ -30,7 +33,7 @@ export function getColumnKey(column) {
     : dataIndex;
 }
 
-export function getColumnsHeads(columns) {
+export function getColumnsFromChildrenHeads(columns) {
   const heads = [];
   let children = columns;
 
