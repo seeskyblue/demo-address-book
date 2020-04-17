@@ -81,8 +81,6 @@ function useSorter(onSortChange) {
   const [sorter, setSorter] = React.useState([]);
   const handleSortChange = useEventCallback(onSortChange);
 
-  console.debug(sorter);
-
   React.useEffect(() => {
     if (sorter.length === 2) handleSortChange(...sorter);
   }, [handleSortChange, sorter]);
