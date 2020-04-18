@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { ArrowDropDown, ArrowDropUp } from '@styled-icons/material';
 import styled from 'styled-components';
 
-export const STATUS_NONE = 0;
-export const STATUS_UP = -1;
-export const STATUS_DOWN = 1;
-const STATUS_ORDER = [STATUS_NONE, STATUS_UP, STATUS_DOWN];
+export const ORDER_NONE = 0;
+export const ORDER_ASC = -1;
+export const ORDER_DESC = 1;
+const ORDER_LOOP = [ORDER_NONE, ORDER_ASC, ORDER_DESC];
 
 const iconSize = 20;
 
@@ -38,25 +38,23 @@ const Button = styled.button.attrs({
   cursor: pointer;
 
   ${SortUp} {
-    color: ${(props) => (props.$status === STATUS_UP ? '#1890ff' : 'unset')};
+    color: ${(props) => (props.$order === ORDER_ASC ? '#1890ff' : 'unset')};
   }
 
   ${SortDown} {
-    color: ${(props) => (props.$status === STATUS_DOWN ? '#1890ff' : 'unset')};
+    color: ${(props) => (props.$order === ORDER_DESC ? '#1890ff' : 'unset')};
   }
 `;
 
 export default function TableHeaderSorter(props) {
-  const { className, status = STATUS_NONE, onChange } = props;
+  const { className, order = ORDER_NONE, onChange } = props;
 
-  const handleStatusChange = () => {
-    const nextStatusIndex =
-      (STATUS_ORDER.indexOf(status) + 1) % STATUS_ORDER.length;
-    onChange?.(STATUS_ORDER[nextStatusIndex]);
+  const handleSorterChange = () => {
+    onChange?.(ORDER_LOOP[(ORDER_LOOP.indexOf(order) + 1) % ORDER_LOOP.length]);
   };
 
   return (
-    <Button className={className} $status={status} onClick={handleStatusChange}>
+    <Button className={className} $order={order} onClick={handleSorterChange}>
       <SortUp />
       <SortDown />
     </Button>
@@ -65,6 +63,6 @@ export default function TableHeaderSorter(props) {
 
 TableHeaderSorter.propTypes = {
   className: PropTypes.string,
-  status: PropTypes.oneOf(STATUS_ORDER),
+  order: PropTypes.oneOf(ORDER_LOOP),
   onChange: PropTypes.func,
 };

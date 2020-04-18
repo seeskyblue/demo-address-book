@@ -161,7 +161,6 @@
         ]
       }
     ],
-    "jsx-a11y/label-has-for": "warn",
     "jsx-a11y/anchor-is-valid": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"

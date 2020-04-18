@@ -3,24 +3,45 @@ import PropTypes from 'prop-types';
 
 import { getFlattenColumns, getObjectValue } from '../util';
 
+import Checkbox from 'ui/Checkbox';
+
 export default function TableBody(props) {
-  const { columns, dataSource, dataKey, selectable } = props;
+  const {
+    columns,
+    dataSource,
+    dataKey,
+    selectable,
+    selectedKeys = [],
+    onSelect,
+  } = props;
   const flattenColumns = useFlattenColumns(columns);
+
+  const handleSelect = (key, checked) => {
+    onSelect?.(key, checked);
+  };
 
   return (
     <tbody>
-      {dataSource?.map((data) => (
-        <tr key={getObjectValue(data, dataKey)}>
-          {selectable && (
-            <th>
-              <input type="checkbox" />
-            </th>
-          )}
-          {flattenColumns?.map((column) => (
-            <td key={column.key}>{getObjectValue(data, column.dataIndex)}</td>
-          ))}
-        </tr>
-      ))}
+      {dataSource?.map((data) => {
+        const key = getObjectValue(data, dataKey);
+        return (
+          <tr key={key}>
+            {selectable && (
+              <th>
+                <Checkbox
+                  size={18}
+                  checked={selectedKeys?.includes(key)}
+                  value={key}
+                  onChange={handleSelect}
+                />
+              </th>
+            )}
+            {flattenColumns?.map((column) => (
+              <td key={column.key}>{getObjectValue(data, column.dataIndex)}</td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   );
 }
@@ -44,6 +65,8 @@ TableBody.propTypes = {
   ]),
   dataSource: PropTypes.arrayOf(PropTypes.object),
   selectable: PropTypes.bool,
+  selectedKeys: PropTypes.arrayOf(PropTypes.any),
+  onSelect: PropTypes.func,
 };
 
 function useFlattenColumns(columns) {

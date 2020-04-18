@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import { getFlattenColumns, omitDefaultSpan } from '../util';
 
-import Sorter from './Sorter';
+import Sorter, { ORDER_NONE } from './Sorter';
 
+import Checkbox from 'ui/Checkbox';
 import useEventCallback from 'util/useEventCallback';
 
 const ColumnSorter = styled(Sorter)`
@@ -13,12 +14,17 @@ const ColumnSorter = styled(Sorter)`
 `;
 
 export default function TableHead(props) {
-  const { columns, selectable, onSortChange } = props;
+  const { columns, selectable, selectedAll, onSelectAll, onSort } = props;
 
   const heads = useHeads(columns);
   const headRows = heads.length;
 
-  const [[sortKey, sortStatus], handleSorterChange] = useSorter(onSortChange);
+  const [sorter, handleSorterChange] = useSort(onSort);
+  const [sortKey, sortOrder] = sorter ?? [];
+
+  const handleSelectAll = (_, checked) => {
+    onSelectAll?.(checked);
+  };
 
   return (
     <thead>
@@ -26,7 +32,12 @@ export default function TableHead(props) {
         <tr key={rowIndex}>
           {selectable && rowIndex === 0 && (
             <th rowSpan={omitDefaultSpan(headRows)}>
-              <input type="checkbox" />
+              <Checkbox
+                size={18}
+                checked={selectedAll ?? false}
+                indeterminate={selectedAll == null}
+                onChange={handleSelectAll}
+              />
             </th>
           )}
           {headColumns?.map((column) => (
@@ -41,9 +52,11 @@ export default function TableHead(props) {
               {column.title}
               {column.sortable && (
                 <ColumnSorter
-                  status={sortKey === column.key ? sortStatus : undefined}
-                  onChange={(status) => {
-                    handleSorterChange([column.key, status]);
+                  order={sortKey === column.key ? sortOrder : undefined}
+                  onChange={(order) => {
+                    handleSorterChange(
+                      order !== ORDER_NONE ? [column.key, order] : undefined
+                    );
                   }}
                 />
               )}
@@ -68,7 +81,9 @@ TableHead.propTypes = {
     })
   ),
   selectable: PropTypes.bool,
-  onSortChange: PropTypes.func,
+  selectedAll: PropTypes.bool,
+  onSelectAll: PropTypes.func,
+  onSort: PropTypes.func,
 };
 
 function useHeads(columns) {
@@ -94,13 +109,13 @@ function useHeads(columns) {
   }, [columns]);
 }
 
-function useSorter(onSortChange) {
-  const [sorter, setSorter] = React.useState([]);
-  const handleSortChange = useEventCallback(onSortChange);
+function useSort(callback) {
+  const [sorter, setSorter] = React.useState();
+  const handleSort = useEventCallback(callback);
 
   React.useEffect(() => {
-    if (sorter.length === 2) handleSortChange(...sorter);
-  }, [handleSortChange, sorter]);
+    if (sorter != null) handleSort(...sorter);
+  }, [handleSort, sorter]);
 
   return [sorter, setSorter];
 }

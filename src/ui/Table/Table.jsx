@@ -6,7 +6,7 @@ import Column from './Column';
 import ColumnGroup from './ColumnGroup';
 import TableHead from './TableHead';
 import TableBody from './TableBody';
-import { getColumnsFromChildren } from './util';
+import { getColumnsFromChildren, getObjectValue } from './util';
 
 const tableCSS = css`
   border-collapse: collapse;
@@ -19,7 +19,7 @@ const tableCSS = css`
   &,
   & th,
   & td {
-    border: 1px solid #f0f0f0;
+    border: 1px solid #e0e0e0;
   }
 
   & caption,
@@ -37,6 +37,13 @@ export default function Table(props) {
   const { dataSource, dataKey, children, selectable = false, title } = props;
 
   const columns = useColumns(children);
+  const [selectedKeys, handleSelect, handleSelectAlll] = useSelectedKeys(
+    dataSource,
+    dataKey
+  );
+
+  const dataCount = dataSource?.length;
+  const selectedCount = selectedKeys?.length;
 
   return (
     <table css={tableCSS}>
@@ -45,12 +52,25 @@ export default function Table(props) {
         {selectable && <col />}
         {children}
       </colgroup>
-      <TableHead columns={columns} selectable={selectable} />
+      <TableHead
+        columns={columns}
+        selectable={selectable}
+        selectedAll={
+          dataCount === selectedCount
+            ? true
+            : selectedCount === 0
+            ? false
+            : null
+        }
+        onSelectAll={handleSelectAlll}
+      />
       <TableBody
         columns={columns}
         dataSource={dataSource}
         dataKey={dataKey}
         selectable={selectable}
+        selectedKeys={selectedKeys}
+        onSelect={handleSelect}
       />
     </table>
   );
@@ -73,6 +93,28 @@ Table.ColumnGroup = ColumnGroup;
 Table.Head = TableHead;
 Table.Body = TableBody;
 
+function useDataSource(defaultDataSource, dataKey, changedDataSource) {
+  const defaultDataMap = React.useMemo(
+    () =>
+      defaultDataSource.reduce((map, data) => {
+        map[getObjectValue(data, dataKey)] = data;
+        return map;
+      }, {}),
+    [dataKey, defaultDataSource]
+  );
+
+  const changedDataMap = React.useMemo(
+    () =>
+      changedDataSource.reduce((map, data) => {
+        map[getObjectValue(data, dataKey)] = data;
+        return map;
+      }, {}),
+    [dataKey, changedDataSource]
+  );
+
+  return React.useMemo(() => {});
+}
+
 function useColumns(children) {
   const [columns, setColumns] = React.useState();
 
@@ -81,4 +123,35 @@ function useColumns(children) {
   }, [children]);
 
   return columns;
+}
+
+function useSelectedKeys(dataSource, dataKey) {
+  const [keys, setKeys] = React.useState([]);
+  console.debug(keys);
+
+  return [
+    keys,
+    React.useCallback((key, selected) => {
+      if (key == null) return;
+
+      setKeys((prevState) =>
+        !selected
+          ? prevState?.filter((selectedKey) => selectedKey !== key)
+          : !prevState.includes(key)
+          ? prevState.concat(key)
+          : prevState
+      );
+    }, []),
+    React.useCallback(
+      (selectedAll) => {
+        console.debug(dataSource.map((data) => getObjectValue(data, dataKey)));
+        setKeys(
+          selectedAll
+            ? dataSource.map((data) => getObjectValue(data, dataKey))
+            : []
+        );
+      },
+      [dataKey, dataSource]
+    ),
+  ];
 }
