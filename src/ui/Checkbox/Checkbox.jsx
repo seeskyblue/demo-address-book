@@ -20,7 +20,7 @@ const UnCheckedIcon = styled(CheckBoxOutlineBlank)`
 `;
 
 const IndeterminateIcon = styled(IndeterminateCheckBox)`
-  color: #e0e0e0;
+  color: #1890ff;
 `;
 
 export default function Checkbox(props) {
