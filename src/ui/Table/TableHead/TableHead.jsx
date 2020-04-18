@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import TableHeaderSorter from './TableHeadSorter';
-import { getColumnsFromChildrenHeads, omitDefaultSpan } from './util';
+import { getFlattenColumns, omitDefaultSpan } from '../util';
+
+import Sorter from './Sorter';
 
 import useEventCallback from 'util/useEventCallback';
 
-const Sorter = styled(TableHeaderSorter)`
+const ColumnSorter = styled(Sorter)`
   margin-left: 3px;
 `;
 
@@ -39,7 +40,7 @@ export default function TableHead(props) {
             >
               {column.title}
               {column.sortable && (
-                <Sorter
+                <ColumnSorter
                   status={sortKey === column.key ? sortStatus : undefined}
                   onChange={(status) => {
                     handleSorterChange([column.key, status]);
@@ -71,7 +72,26 @@ TableHead.propTypes = {
 };
 
 function useHeads(columns) {
-  return React.useMemo(() => getColumnsFromChildrenHeads(columns), [columns]);
+  return React.useMemo(() => {
+    const heads = [];
+    let children = columns;
+
+    while (children?.length > 0) {
+      heads.push(
+        children.map((child) => ({
+          ...child,
+          colSpan: getFlattenColumns(child.children)?.length,
+        }))
+      );
+
+      children = children.reduce((list, column) => {
+        if (column.children != null) list.push(...column.children);
+        return list;
+      }, []);
+    }
+
+    return heads;
+  }, [columns]);
 }
 
 function useSorter(onSortChange) {

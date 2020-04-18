@@ -20,6 +20,7 @@ export default function AddressBookTable(props) {
   return (
     <Table
       dataSource={dataSource}
+      dataKey="id"
       selectable
       title={formatMessage({ id: MESSAGE_TABLE_TITLE })}
     >

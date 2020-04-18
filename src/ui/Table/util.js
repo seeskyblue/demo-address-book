@@ -33,33 +33,16 @@ function getColumnKey(column) {
     : dataIndex;
 }
 
-export function getColumnsFromChildrenHeads(columns) {
-  const heads = [];
-  let children = columns;
-
-  while (children?.length > 0) {
-    heads.push(
-      children.map((child) => ({
-        ...child,
-        colSpan: getFlattenColumns(child.children)?.length,
-      }))
-    );
-
-    children = children.reduce((list, column) => {
-      if (column.children != null) list.push(...column.children);
-      return list;
-    }, []);
+export function getObjectValue(object, expression) {
+  if (typeof expression === 'function') {
+    return expression(object);
   }
 
-  return heads;
-}
+  if (Array.isArray(expression)) {
+    return expression.reduce((obj, key) => obj[key], object);
+  }
 
-export function getColumnData(data, column) {
-  const { dataIndex } = column;
-
-  return Array.isArray(dataIndex)
-    ? dataIndex.reduce((map, key) => map[key], data)
-    : data[dataIndex];
+  return object[expression];
 }
 
 export function getFlattenColumns(columns) {

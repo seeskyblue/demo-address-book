@@ -1,6 +1,5 @@
 export default [
   {
-    key: 501,
     id: 501,
     name: 'Khali Zhang',
     location: 'Shanghai',
@@ -11,7 +10,6 @@ export default [
     },
   },
   {
-    key: 712,
     id: 712,
     name: 'Neil Xie',
     location: 'Shanghai',

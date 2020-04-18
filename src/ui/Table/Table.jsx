@@ -34,7 +34,7 @@ const tableCSS = css`
 `;
 
 export default function Table(props) {
-  const { dataSource, children, selectable = false, title } = props;
+  const { dataSource, dataKey, children, selectable = false, title } = props;
 
   const columns = useColumns(children);
 
@@ -49,6 +49,7 @@ export default function Table(props) {
       <TableBody
         columns={columns}
         dataSource={dataSource}
+        dataKey={dataKey}
         selectable={selectable}
       />
     </table>
@@ -57,6 +58,11 @@ export default function Table(props) {
 
 Table.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element),
+  dataKey: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.func,
+  ]),
   dataSource: PropTypes.arrayOf(PropTypes.object),
   selectable: PropTypes.bool,
   title: PropTypes.string,

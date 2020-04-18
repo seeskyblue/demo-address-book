@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getColumnData, getFlattenColumns } from './util';
+import { getFlattenColumns, getObjectValue } from '../util';
 
 export default function TableBody(props) {
-  const { columns, dataSource, selectable } = props;
+  const { columns, dataSource, dataKey, selectable } = props;
   const flattenColumns = useFlattenColumns(columns);
 
   return (
     <tbody>
-      {dataSource?.map(({ key: dataKey, ...dataProps }) => (
-        <tr key={dataKey}>
+      {dataSource?.map((data) => (
+        <tr key={getObjectValue(data, dataKey)}>
           {selectable && (
             <th>
               <input type="checkbox" />
             </th>
           )}
           {flattenColumns?.map((column) => (
-            <td key={column.key}>{getColumnData(dataProps, column)}</td>
+            <td key={column.key}>{getObjectValue(data, column.dataIndex)}</td>
           ))}
         </tr>
       ))}
@@ -32,10 +32,16 @@ TableBody.propTypes = {
       dataIndex: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),
+        PropTypes.func,
       ]),
       key: PropTypes.string.isRequired,
     })
   ),
+  dataKey: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.func,
+  ]),
   dataSource: PropTypes.arrayOf(PropTypes.object),
   selectable: PropTypes.bool,
 };
