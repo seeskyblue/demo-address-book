@@ -22,7 +22,7 @@ npm start
   <caption>Address Book</caption>
   <thead>
     <tr>
-      <th scope="col" rowspan="2">[]</th>
+      <th scope="col" rowspan="2">[ ]</th>
       <th scope="col" rowspan="2">ID</th>
       <th scope="col" rowspan="2">Name</th>
       <th scope="col" rowspan="2">Location</th>
@@ -36,7 +36,7 @@ npm start
   </thead>
   <tbody>
     <tr>
-      <th scope="row">[]</th>
+      <th scope="row">[ ]</th>
       <td>501</td>
       <td>Khali Zhang</td>
       <td>Shanghai</td>
@@ -45,7 +45,7 @@ npm start
       <td>650-353-1239</td>
     </tr>
     <tr>
-      <th scope="row">[]</th>
+      <th scope="row">[ ]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -54,7 +54,7 @@ npm start
       <td></td>
     </tr>
     <tr>
-      <th scope="row">[]</th>
+      <th scope="row">[ ]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -63,7 +63,7 @@ npm start
       <td></td>
     </tr>
     <tr>
-      <th scope="row">[]</th>
+      <th scope="row">[ ]</th>
       <td></td>
       <td></td>
       <td></td>
@@ -87,16 +87,16 @@ npm start
 
 ## Notes
 
-1.	Cell phone column can be edited when double clicked
+* [x] Cell phone column can be edited when double clicked
 
-2.	Clicking the column labe would sort the column alphabatically
+* [x] Clicking the column labe would sort the column alphabatically
 
-3.	When the selector of the first column and the first row is checked, all rows are selected
+* [x] When the selector of the first column and the first row is checked, all rows are selected
 
-4.	Clicking the Delete button will delete the selected rows
+* [x] Clicking the Delete button will delete the selected rows
 
-5.	Update will cause the Ajax invocation to update the modified rows.  For now just pop up a alert panel showing the rows you are to update
+* [x] Update will cause the Ajax invocation to update the modified rows.  For now just pop up a alert panel showing the rows you are to update
 
-6.	Add will add an empty row to fill in the data except the ID, which will be filled after updating
+* [x] Add will add an empty row to fill in the data except the ID, which will be filled after updating
 
-7.	Think of how to localize this
+* [ ] Think of how to localize this

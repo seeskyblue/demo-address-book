@@ -55,7 +55,7 @@ export function getObjectValue(object, expression) {
   }
 
   if (Array.isArray(expression)) {
-    return expression.reduce((obj, key) => obj[key], object);
+    return expression.reduce((obj, key) => obj?.[key], object);
   }
 
   return object[expression];

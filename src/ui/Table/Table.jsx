@@ -37,6 +37,7 @@ const tableCSS = css`
 
 export default function Table(props) {
   const {
+    className,
     dataSource,
     dataKey,
     children,
@@ -60,7 +61,7 @@ export default function Table(props) {
   const selectedCount = selectedKeys?.length ?? 0;
 
   return (
-    <table css={tableCSS}>
+    <table className={className} css={tableCSS}>
       {title && <caption>{title}</caption>}
       <colgroup>
         {selectable && <col />}
@@ -70,7 +71,7 @@ export default function Table(props) {
         columns={columns}
         selectable={selectable}
         selectedAll={
-          dataCount === selectedCount
+          selectedCount > 0 && dataCount === selectedCount
             ? true
             : selectedCount === 0
             ? false
@@ -94,6 +95,7 @@ export default function Table(props) {
 
 Table.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element),
+  className: PropTypes.string,
   dataKey: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
@@ -152,6 +154,14 @@ function useDataKeys(dataSource, dataKey) {
 function useSelectedKeys(dataKeys) {
   const [keys, setKeys] = React.useState();
 
+  React.useEffect(() => {
+    setKeys((prevState) =>
+      prevState?.some((key) => !dataKeys.includes(key))
+        ? prevState.filter((key) => dataKeys.includes(key))
+        : prevState
+    );
+  }, [dataKeys]);
+
   return [
     keys,
     React.useCallback((key, selected) => {
@@ -183,7 +193,7 @@ function useSelectHandle(selectedKeys, callback) {
 
 function useSort() {
   const [sort, setSort] = React.useState();
-  console.debug(sort);
+
   return [
     sort,
     React.useCallback((key, order) => {

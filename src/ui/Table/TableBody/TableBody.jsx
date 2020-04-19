@@ -27,7 +27,7 @@ export default function TableBody(props) {
         return (
           <tr key={key}>
             {selectable && (
-              <th>
+              <th scope="row">
                 <Checkbox
                   size={18}
                   checked={selectedKeys?.includes(key)}
