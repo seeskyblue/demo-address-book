@@ -36,9 +36,16 @@ export default function TableBody(props) {
                 />
               </th>
             )}
-            {flattenColumns?.map((column) => (
-              <td key={column.key}>{getObjectValue(data, column.dataIndex)}</td>
-            ))}
+            {flattenColumns?.map((column) => {
+              const value = getObjectValue(data, column.dataIndex);
+              return (
+                <td key={column.key}>
+                  {column.render != null
+                    ? column.render(value, data, column)
+                    : value}
+                </td>
+              );
+            })}
           </tr>
         );
       })}
@@ -56,6 +63,7 @@ TableBody.propTypes = {
         PropTypes.func,
       ]),
       key: PropTypes.string.isRequired,
+      render: PropTypes.func,
     })
   ),
   dataKey: PropTypes.oneOfType([

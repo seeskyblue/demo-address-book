@@ -6,7 +6,9 @@ import Column from './Column';
 import ColumnGroup from './ColumnGroup';
 import TableHead from './TableHead';
 import TableBody from './TableBody';
-import { getColumnsFromChildren, getObjectValue } from './util';
+import { getColumnsFromChildren, getObjectValue, orderBy } from './util';
+
+import useEventCallback from 'util/useEventCallback';
 
 const tableCSS = css`
   border-collapse: collapse;
@@ -34,16 +36,28 @@ const tableCSS = css`
 `;
 
 export default function Table(props) {
-  const { dataSource, dataKey, children, selectable = false, title } = props;
+  const {
+    dataSource,
+    dataKey,
+    children,
+    selectable = false,
+    onSelect,
+    title,
+  } = props;
 
   const columns = useColumns(children);
+  const dataKeys = useDataKeys(dataSource, dataKey);
+
   const [selectedKeys, handleSelect, handleSelectAlll] = useSelectedKeys(
-    dataSource,
-    dataKey
+    dataKeys
   );
+  useSelectHandle(selectedKeys, onSelect);
+
+  const [sort, handleSort] = useSort();
+  const sortedDataSource = useSortedDataSource(dataSource, sort);
 
   const dataCount = dataSource?.length;
-  const selectedCount = selectedKeys?.length;
+  const selectedCount = selectedKeys?.length ?? 0;
 
   return (
     <table css={tableCSS}>
@@ -63,10 +77,12 @@ export default function Table(props) {
             : null
         }
         onSelectAll={handleSelectAlll}
+        sort={sort}
+        onSort={handleSort}
       />
       <TableBody
         columns={columns}
-        dataSource={dataSource}
+        dataSource={sortedDataSource}
         dataKey={dataKey}
         selectable={selectable}
         selectedKeys={selectedKeys}
@@ -86,6 +102,7 @@ Table.propTypes = {
   dataSource: PropTypes.arrayOf(PropTypes.object),
   selectable: PropTypes.bool,
   title: PropTypes.string,
+  onSelect: PropTypes.func,
 };
 
 Table.Column = Column;
@@ -93,27 +110,27 @@ Table.ColumnGroup = ColumnGroup;
 Table.Head = TableHead;
 Table.Body = TableBody;
 
-function useDataSource(defaultDataSource, dataKey, changedDataSource) {
-  const defaultDataMap = React.useMemo(
-    () =>
-      defaultDataSource.reduce((map, data) => {
-        map[getObjectValue(data, dataKey)] = data;
-        return map;
-      }, {}),
-    [dataKey, defaultDataSource]
-  );
+// function useDataSource(defaultDataSource, dataKey, changedDataSource) {
+//   const defaultDataMap = React.useMemo(
+//     () =>
+//       defaultDataSource.reduce((map, data) => {
+//         map[getObjectValue(data, dataKey)] = data;
+//         return map;
+//       }, {}),
+//     [dataKey, defaultDataSource]
+//   );
 
-  const changedDataMap = React.useMemo(
-    () =>
-      changedDataSource.reduce((map, data) => {
-        map[getObjectValue(data, dataKey)] = data;
-        return map;
-      }, {}),
-    [dataKey, changedDataSource]
-  );
+//   const changedDataMap = React.useMemo(
+//     () =>
+//       changedDataSource.reduce((map, data) => {
+//         map[getObjectValue(data, dataKey)] = data;
+//         return map;
+//       }, {}),
+//     [dataKey, changedDataSource]
+//   );
 
-  return React.useMemo(() => {});
-}
+//   return React.useMemo(() => {});
+// }
 
 function useColumns(children) {
   const [columns, setColumns] = React.useState();
@@ -125,16 +142,21 @@ function useColumns(children) {
   return columns;
 }
 
-function useSelectedKeys(dataSource, dataKey) {
-  const [keys, setKeys] = React.useState([]);
-  console.debug(keys);
+function useDataKeys(dataSource, dataKey) {
+  return React.useMemo(
+    () => dataSource.map((data) => getObjectValue(data, dataKey)),
+    [dataKey, dataSource]
+  );
+}
+
+function useSelectedKeys(dataKeys) {
+  const [keys, setKeys] = React.useState();
 
   return [
     keys,
     React.useCallback((key, selected) => {
       if (key == null) return;
-
-      setKeys((prevState) =>
+      setKeys((prevState = []) =>
         !selected
           ? prevState?.filter((selectedKey) => selectedKey !== key)
           : !prevState.includes(key)
@@ -144,14 +166,37 @@ function useSelectedKeys(dataSource, dataKey) {
     }, []),
     React.useCallback(
       (selectedAll) => {
-        console.debug(dataSource.map((data) => getObjectValue(data, dataKey)));
-        setKeys(
-          selectedAll
-            ? dataSource.map((data) => getObjectValue(data, dataKey))
-            : []
-        );
+        setKeys(selectedAll ? dataKeys : []);
       },
-      [dataKey, dataSource]
+      [dataKeys]
     ),
   ];
+}
+
+function useSelectHandle(selectedKeys, callback) {
+  const handleCallback = useEventCallback(callback);
+
+  React.useEffect(() => {
+    if (selectedKeys != null) handleCallback(selectedKeys);
+  }, [handleCallback, selectedKeys]);
+}
+
+function useSort() {
+  const [sort, setSort] = React.useState();
+  console.debug(sort);
+  return [
+    sort,
+    React.useCallback((key, order) => {
+      setSort(order && { key, order });
+    }, []),
+  ];
+}
+
+function useSortedDataSource(dataSource, sort) {
+  return React.useMemo(() => {
+    if (sort == null) return dataSource;
+
+    const { key, order } = sort;
+    return [...dataSource].sort(orderBy(key, order));
+  }, [dataSource, sort]);
 }

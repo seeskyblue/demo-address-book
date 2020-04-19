@@ -33,18 +33,6 @@ function getColumnKey(column) {
     : dataIndex;
 }
 
-export function getObjectValue(object, expression) {
-  if (typeof expression === 'function') {
-    return expression(object);
-  }
-
-  if (Array.isArray(expression)) {
-    return expression.reduce((obj, key) => obj[key], object);
-  }
-
-  return object[expression];
-}
-
 export function getFlattenColumns(columns) {
   return columns?.reduce((list, column) => {
     if (column.children != null) {
@@ -59,4 +47,28 @@ export function getFlattenColumns(columns) {
 const DEFAULT_SPAN = 1;
 export function omitDefaultSpan(span) {
   return span !== DEFAULT_SPAN ? span : undefined;
+}
+
+export function getObjectValue(object, expression) {
+  if (typeof expression === 'function') {
+    return expression(object);
+  }
+
+  if (Array.isArray(expression)) {
+    return expression.reduce((obj, key) => obj[key], object);
+  }
+
+  return object[expression];
+}
+
+export function orderBy(key, determiner) {
+  return (prev, next) => {
+    const [prevValue, nextValue] = [prev, next].map((data) =>
+      String(getObjectValue(data, key.split('.')))
+    );
+
+    return (
+      (prevValue < nextValue ? -1 : prevValue > nextValue ? 1 : 0) * determiner
+    );
+  };
 }

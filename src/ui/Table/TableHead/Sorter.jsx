@@ -4,9 +4,9 @@ import { ArrowDropDown, ArrowDropUp } from '@styled-icons/material';
 import styled from 'styled-components';
 
 export const ORDER_NONE = 0;
-export const ORDER_ASC = -1;
-export const ORDER_DESC = 1;
-const ORDER_LOOP = [ORDER_NONE, ORDER_ASC, ORDER_DESC];
+export const ORDER_ASC = 1;
+export const ORDER_DESC = -1;
+export const ORDER_LOOP = [ORDER_NONE, ORDER_ASC, ORDER_DESC];
 
 const iconSize = 20;
 
@@ -49,12 +49,14 @@ const Button = styled.button.attrs({
 export default function TableHeaderSorter(props) {
   const { className, order = ORDER_NONE, onChange } = props;
 
-  const handleSorterChange = () => {
-    onChange?.(ORDER_LOOP[(ORDER_LOOP.indexOf(order) + 1) % ORDER_LOOP.length]);
+  const handleChange = () => {
+    const nextOrder =
+      ORDER_LOOP[(ORDER_LOOP.indexOf(order) + 1) % ORDER_LOOP.length];
+    onChange?.(nextOrder != ORDER_NONE ? nextOrder : null);
   };
 
   return (
-    <Button className={className} $order={order} onClick={handleSorterChange}>
+    <Button className={className} $order={order} onClick={handleChange}>
       <SortUp />
       <SortDown />
     </Button>

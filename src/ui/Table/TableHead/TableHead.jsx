@@ -4,26 +4,29 @@ import styled from 'styled-components';
 
 import { getFlattenColumns, omitDefaultSpan } from '../util';
 
-import Sorter, { ORDER_NONE } from './Sorter';
+import Sorter, { ORDER_LOOP } from './Sorter';
 
 import Checkbox from 'ui/Checkbox';
-import useEventCallback from 'util/useEventCallback';
 
 const ColumnSorter = styled(Sorter)`
   margin-left: 3px;
 `;
 
 export default function TableHead(props) {
-  const { columns, selectable, selectedAll, onSelectAll, onSort } = props;
+  const { columns, selectable, selectedAll, onSelectAll, sort, onSort } = props;
 
   const heads = useHeads(columns);
   const headRows = heads.length;
 
-  const [sorter, handleSorterChange] = useSort(onSort);
-  const [sortKey, sortOrder] = sorter ?? [];
+  // const [sort, handleSortChange] = useSort(onSort);
+  // const [sortKey, sortOrder] = sort ?? [];
 
   const handleSelectAll = (_, checked) => {
     onSelectAll?.(checked);
+  };
+
+  const makeSortHandle = (key) => (order) => {
+    onSort?.(key, order);
   };
 
   return (
@@ -52,12 +55,8 @@ export default function TableHead(props) {
               {column.title}
               {column.sortable && (
                 <ColumnSorter
-                  order={sortKey === column.key ? sortOrder : undefined}
-                  onChange={(order) => {
-                    handleSorterChange(
-                      order !== ORDER_NONE ? [column.key, order] : undefined
-                    );
-                  }}
+                  order={sort?.key === column.key ? sort.order : undefined}
+                  onChange={makeSortHandle(column.key)}
                 />
               )}
             </th>
@@ -82,6 +81,10 @@ TableHead.propTypes = {
   ),
   selectable: PropTypes.bool,
   selectedAll: PropTypes.bool,
+  sort: PropTypes.shape({
+    key: PropTypes.string,
+    order: PropTypes.oneOf(ORDER_LOOP),
+  }),
   onSelectAll: PropTypes.func,
   onSort: PropTypes.func,
 };
@@ -109,13 +112,13 @@ function useHeads(columns) {
   }, [columns]);
 }
 
-function useSort(callback) {
-  const [sorter, setSorter] = React.useState();
-  const handleSort = useEventCallback(callback);
+// function useSort(callback) {
+//   const [sort, setSorter] = React.useState();
+//   const handleSort = useEventCallback(callback);
 
-  React.useEffect(() => {
-    if (sorter != null) handleSort(...sorter);
-  }, [handleSort, sorter]);
+//   React.useEffect(() => {
+//     if (sort != null) handleSort(...sort);
+//   }, [handleSort, sort]);
 
-  return [sorter, setSorter];
-}
+//   return [sort, setSorter];
+// }
