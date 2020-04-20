@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { IntlProvider as Provider } from 'react-intl';
 
 import IntlContext from './IntlContext';
+import IntlSwitch from './IntlSwitch';
 import { flattenMessage } from './util';
 
 const DEFAULT_LOCALE = 'en';
@@ -23,6 +24,8 @@ export default function IntlProvider(props) {
     <IntlContext.Provider value={contextValue}>
       {messages && (
         <Provider locale={locale} messages={messages}>
+          {/* In real world, we triggle locale change by change location path */}
+          <IntlSwitch />
           {children}
         </Provider>
       )}

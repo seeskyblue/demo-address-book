@@ -1,6 +1,6 @@
 export default {
   address_book: {
-    tabel: {
+    table: {
       caption: '通讯簿',
       column: {
         id: '编号',
@@ -8,7 +8,7 @@ export default {
         location: '地区',
         office: '办公室',
         phone: '电话',
-        cell: '个人',
+        cell: '手机',
       },
     },
     action: {

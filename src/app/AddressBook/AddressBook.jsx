@@ -233,29 +233,6 @@ function useAdd(onEdit) {
   ];
 }
 
-function useDataSource(dataSource, addedKeys, deletedKeys, editMap) {
-  return React.useMemo(
-    () =>
-      dataSource
-        .concat(addedKeys.map((key) => ({ [DATA_ADD_KEY]: key })))
-        .filter((data) => !deletedKeys?.includes(getDataKey(data)))
-        .map((data) => {
-          const mergedData = { ...data };
-          const editingData = editMap[getDataKey(data)];
-
-          if (editingData) {
-            setObjectValue(mergedData, DATA_EDIT_KEY, editingData);
-            Object.keys(editingData).forEach((key) => {
-              setObjectValue(mergedData, key, editingData[key]);
-            });
-          }
-
-          return mergedData;
-        }),
-    [addedKeys, dataSource, deletedKeys, editMap]
-  );
-}
-
 function useUpdate(adjustedDataSource) {
   const [updateData, setUpdateData] = React.useState();
 
@@ -288,6 +265,35 @@ function useUpdate(adjustedDataSource) {
   return React.useCallback(() => {
     setUpdateData(updateDataSource);
   }, [updateDataSource]);
+}
+
+/**
+ * adjust original data source by:
+ *   1. add new rows,
+ *   2. remove deleted rows,
+ *   3. change edited value.
+ */
+function useDataSource(dataSource, addedKeys, deletedKeys, editMap) {
+  return React.useMemo(
+    () =>
+      dataSource
+        .concat(addedKeys.map((key) => ({ [DATA_ADD_KEY]: key })))
+        .filter((data) => !deletedKeys?.includes(getDataKey(data)))
+        .map((data) => {
+          const mergedData = { ...data };
+          const editingData = editMap[getDataKey(data)];
+
+          if (editingData) {
+            setObjectValue(mergedData, DATA_EDIT_KEY, editingData);
+            Object.keys(editingData).forEach((key) => {
+              setObjectValue(mergedData, key, editingData[key]);
+            });
+          }
+
+          return mergedData;
+        }),
+    [addedKeys, dataSource, deletedKeys, editMap]
+  );
 }
 
 function useColumnRender(onEdit) {
