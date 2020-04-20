@@ -6,9 +6,11 @@ import Column from './Column';
 import ColumnGroup from './ColumnGroup';
 import TableHead from './TableHead';
 import TableBody from './TableBody';
-import { getColumnsFromChildren, getObjectValue, orderBy } from './util';
+import { getColumnsFromChildren } from './util';
 
 import useEventCallback from 'util/useEventCallback';
+import { getObjectValue } from 'util/object';
+import { orderBy } from 'util/array';
 
 const tableCSS = css`
   border-collapse: collapse;
@@ -111,28 +113,6 @@ Table.Column = Column;
 Table.ColumnGroup = ColumnGroup;
 Table.Head = TableHead;
 Table.Body = TableBody;
-
-// function useDataSource(defaultDataSource, dataKey, changedDataSource) {
-//   const defaultDataMap = React.useMemo(
-//     () =>
-//       defaultDataSource.reduce((map, data) => {
-//         map[getObjectValue(data, dataKey)] = data;
-//         return map;
-//       }, {}),
-//     [dataKey, defaultDataSource]
-//   );
-
-//   const changedDataMap = React.useMemo(
-//     () =>
-//       changedDataSource.reduce((map, data) => {
-//         map[getObjectValue(data, dataKey)] = data;
-//         return map;
-//       }, {}),
-//     [dataKey, changedDataSource]
-//   );
-
-//   return React.useMemo(() => {});
-// }
 
 function useColumns(children) {
   const [columns, setColumns] = React.useState();

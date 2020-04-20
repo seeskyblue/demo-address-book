@@ -6,6 +6,7 @@ import mockDataSource from './mock';
 
 import Table from 'ui/Table';
 import useEventCallback from 'util/useEventCallback';
+import { setObjectValue } from 'util/object';
 
 const DATA_EDIT_KEY = '__editing';
 const DATA_ADD_KEY = '__added';
@@ -238,10 +239,19 @@ function useDataSource(dataSource, addedKeys, deletedKeys, editMap) {
       dataSource
         .concat(addedKeys.map((key) => ({ [DATA_ADD_KEY]: key })))
         .filter((data) => !deletedKeys?.includes(getDataKey(data)))
-        .map((data) => ({
-          ...data,
-          [DATA_EDIT_KEY]: editMap[getDataKey(data)],
-        })),
+        .map((data) => {
+          const mergedData = { ...data };
+          const editingData = editMap[getDataKey(data)];
+
+          if (editingData) {
+            setObjectValue(mergedData, DATA_EDIT_KEY, editingData);
+            Object.keys(editingData).forEach((key) => {
+              setObjectValue(mergedData, key, editingData[key]);
+            });
+          }
+
+          return mergedData;
+        }),
     [addedKeys, dataSource, deletedKeys, editMap]
   );
 }
@@ -252,6 +262,7 @@ function useUpdate(adjustedDataSource) {
   React.useEffect(() => {
     if (!updateData) return;
     alert(JSON.stringify(updateData, null, '  '));
+    console.debug(updateData);
   }, [updateData]);
 
   const updateDataSource = React.useMemo(
