@@ -114,6 +114,9 @@ Table.ColumnGroup = ColumnGroup;
 Table.Head = TableHead;
 Table.Body = TableBody;
 
+/**
+ * Convert children to column by children's props
+ */
 function useColumns(children) {
   const [columns, setColumns] = React.useState();
 
@@ -124,6 +127,9 @@ function useColumns(children) {
   return columns;
 }
 
+/**
+ * Get keys from dataSource
+ */
 function useDataKeys(dataSource, dataKey) {
   return React.useMemo(
     () => dataSource.map((data) => getObjectValue(data, dataKey)),
@@ -131,6 +137,9 @@ function useDataKeys(dataSource, dataKey) {
   );
 }
 
+/**
+ * Handle selected keys change, remove keys not in data keys
+ */
 function useSelectedKeys(dataKeys) {
   const [keys, setKeys] = React.useState();
 
@@ -163,6 +172,9 @@ function useSelectedKeys(dataKeys) {
   ];
 }
 
+/**
+ * Handle callback when selected keys changed
+ */
 function useSelectHandle(selectedKeys, callback) {
   const handleCallback = useEventCallback(callback);
 
@@ -182,6 +194,9 @@ function useSort() {
   ];
 }
 
+/**
+ * Sort data source
+ */
 function useSortedDataSource(dataSource, sort) {
   return React.useMemo(() => {
     if (sort == null) return dataSource;

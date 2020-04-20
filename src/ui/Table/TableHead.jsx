@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { getFlattenColumns, omitDefaultSpan } from '../util';
-
+import { getFlattenColumns, omitDefaultSpan } from './util';
 import Sorter, { ORDER_LOOP } from './Sorter';
 
 import Checkbox from 'ui/Checkbox';
@@ -16,10 +15,7 @@ export default function TableHead(props) {
   const { columns, selectable, selectedAll, onSelectAll, sort, onSort } = props;
 
   const heads = useHeads(columns);
-  const headRows = heads.length;
-
-  // const [sort, handleSortChange] = useSort(onSort);
-  // const [sortKey, sortOrder] = sort ?? [];
+  const headCount = heads.length;
 
   const handleSelectAll = (_, checked) => {
     onSelectAll?.(checked);
@@ -34,7 +30,7 @@ export default function TableHead(props) {
       {heads.map((headColumns, rowIndex) => (
         <tr key={rowIndex}>
           {selectable && rowIndex === 0 && (
-            <th rowSpan={omitDefaultSpan(headRows)}>
+            <th rowSpan={omitDefaultSpan(headCount)}>
               <Checkbox
                 size={18}
                 checked={selectedAll ?? false}
@@ -47,7 +43,7 @@ export default function TableHead(props) {
             <th
               key={column.key}
               rowSpan={omitDefaultSpan(
-                column.children ? 1 : headRows - rowIndex
+                column.children ? 1 : headCount - rowIndex
               )}
               colSpan={omitDefaultSpan(column.colSpan)}
               scope={column.children ? 'colgroup' : 'col'}
@@ -111,14 +107,3 @@ function useHeads(columns) {
     return heads;
   }, [columns]);
 }
-
-// function useSort(callback) {
-//   const [sort, setSorter] = React.useState();
-//   const handleSort = useEventCallback(callback);
-
-//   React.useEffect(() => {
-//     if (sort != null) handleSort(...sort);
-//   }, [handleSort, sort]);
-
-//   return [sort, setSorter];
-// }

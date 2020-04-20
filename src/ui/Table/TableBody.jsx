@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getFlattenColumns } from '../util';
+import { getFlattenColumns } from './util';
 
 import Checkbox from 'ui/Checkbox';
 import { getObjectValue } from 'util/object';
