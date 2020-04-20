@@ -99,4 +99,4 @@ npm start
 
 * [x] Add will add an empty row to fill in the data except the ID, which will be filled after updating
 
-* [ ] Think of how to localize this
+* [x] Think of how to localize this
